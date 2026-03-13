@@ -1,0 +1,9 @@
+name: msal-poc-api
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.14.3
+  - pip
+  - pip:
+    - fastapi[standard]==0.135.1
