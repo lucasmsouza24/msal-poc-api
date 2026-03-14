@@ -1,4 +1,4 @@
-.PHONY: push docker-up docker-down k8s-api-up k8s-api-down
+.PHONY: push docker-up docker-down k8s-api-up k8s-api-down docker-db-up docker-db-down
 
 # push to remote repositories
 push:
@@ -14,6 +14,15 @@ docker-up: docker-down
 docker-down:
 	docker stop msal-poc-api || true
 	docker rm msal-poc-api || true
+
+# local db docker container build
+docker-db-up: docker-db-down
+	docker build -t db ./db/.
+	docker run --name db -p 5432:5432 -d db
+
+docker-db-down:
+	docker stop db || true
+	docker rm db || true
 
 # local api minikube k8s build
 
