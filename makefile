@@ -4,6 +4,7 @@ push:
 
 docker up:
 	make docker down
+	docker build -t msal-poc-api .
 	docker run --name msal-poc-api --env-file .env -p 8000:8000 -it -d msal-poc-api
 	docker logs msal-poc-api -f
 
