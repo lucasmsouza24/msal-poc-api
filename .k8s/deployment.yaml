@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msal-api-deployment
+  labels:
+    app: msal-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msal-api
+  template:
+    metadata:
+      labels:
+        app: msal-api
+    spec:
+      containers:
+      - name: msal-api
+        image: docker.io/library/msal-poc-api
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
