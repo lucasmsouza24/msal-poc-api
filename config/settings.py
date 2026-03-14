@@ -6,6 +6,11 @@ class Settings(BaseSettings):
     msal_authority: str
     redirect_uri: str
     frontend_uri: str
+    db_host: str
+    db_port: int
+    db_name: str
+    db_user: str
+    db_password: str
 
     class Config:
         env_file = ".env"

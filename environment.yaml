@@ -4,6 +4,8 @@ channels:
   - defaults
 dependencies:
   - python=3.14.3
+  - psycopg2
+  - requests
   - pip
   - pip:
     - fastapi[standard]==0.135.1
