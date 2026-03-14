@@ -1,4 +1,4 @@
-.PHONY: push docker-up docker-down k8s-api-up k8s-api-down docker-db-up docker-db-down
+.PHONY: push docker-up docker-down k8s-api-up k8s-api-down docker-db-up docker-db-down k8s-db-up k8s-db-down k8s-build
 
 # push to remote repositories
 push:
@@ -36,3 +36,16 @@ k8s-api-up: k8s-api-down
 k8s-api-down:
 	kubectl delete deployment msal-api-deployment || true
 	kubectl delete service msal-api-service || true
+
+k8s-db-up: k8s-db-down
+	minikube image build -t db ./db/.
+	kubectl apply -f ./db/.k8s/service.yaml
+	kubectl apply -f ./db/.k8s/deployment.yaml
+
+k8s-db-down:
+	kubectl delete deployment db-deployment || true
+	kubectl delete service db-service || true
+
+k8s-build: 
+	make k8s-db-up
+	make k8s-api-up
