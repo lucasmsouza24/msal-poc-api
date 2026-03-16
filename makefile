@@ -1,4 +1,4 @@
-.PHONY: push docker-up docker-down k8s-api-up k8s-api-down docker-db-up docker-db-down k8s-db-up k8s-db-down k8s-build
+.PHONY: push docker-api-up docker-api-down k8s-api-up k8s-api-down docker-db-up docker-db-down k8s-db-up k8s-db-down k8s-build docker-build
 
 # push to remote repositories
 push:
@@ -6,23 +6,29 @@ push:
 	git push azure main
 
 # local api docker container build
-docker-up: docker-down
+docker-api-up: docker-api-down
 	docker build -t msal-poc-api .
-	docker run --name msal-poc-api --env-file .env -p 8000:8000 -it -d msal-poc-api
+	docker run --name msal-poc-api --env-file .env -p 8000:8000 --network msal-network -it -d msal-poc-api
 	docker logs msal-poc-api -f
 
-docker-down:
+docker-api-down:
 	docker stop msal-poc-api || true
 	docker rm msal-poc-api || true
 
 # local db docker container build
 docker-db-up: docker-db-down
 	docker build -t db ./db/.
-	docker run --name db -p 5432:5432 -d db
+	docker run --name db -p 5432:5432 --network msal-network -d db
 
 docker-db-down:
 	docker stop db || true
 	docker rm db || true
+
+docker-build:
+	docker network remove msal-network || true
+	docker network create msal-network
+	make docker-db-up
+	make docker-api-up
 
 # local api minikube k8s build
 
