@@ -51,6 +51,22 @@ The App Registration must include:
 
 These values are required to populate the `.env` file used by the API.
 
+## Azure App Registration Configuration
+
+Your App Registration must include the following redirect URIs:
+
+Docker environment:
+
+http://localhost:8000/api/auth/callback
+
+Kubernetes environment:
+
+https://msal.local/api/auth/callback
+
+Example configuration in the Azure Portal:
+
+![Azure Redirect URI Configuration](docs/redirect-uri.png)
+
 To run the project you need one of the following environments:
 
 ### Option 1 — Docker
